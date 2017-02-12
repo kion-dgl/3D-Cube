@@ -94,6 +94,8 @@ void on_display() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glUseProgram(program);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_triangle);
 	glEnableVertexAttribArray(attribute_coord2d);
 
 	glVertexAttribPointer(
