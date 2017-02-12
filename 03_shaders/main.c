@@ -1,5 +1,5 @@
 /*
-    This file is part of Termantics OpenGL Basics Tutorial
+    This file is part of DashGL.com OpenGL 2.0 Introduction
 
     Copyright (C) 2017 Benjamin Collins
 
