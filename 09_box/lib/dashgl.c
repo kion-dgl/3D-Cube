@@ -303,7 +303,8 @@ GLuint dash_texture_load(const char *filename) {
         GL_UNSIGNED_BYTE,
         data
     );
-	
+	free(data);
+
 	return texture_id;
 
 }
