@@ -71,9 +71,11 @@
 	void mat4_identity(mat4 m);
 	void mat4_copy(mat4 a, mat4 m);
 	void mat4_translate(vec3 t, mat4 m);
+	void mat4_rotate_x(float x, mat4 m);
 	void mat4_rotate_y(float y, mat4 m);
 	void mat4_rotate_z(float z, mat4 m);
 	void mat4_multiply(mat4 a, mat4 b, mat4 m);
+	void mat4_rotate(vec3 r, mat4 m);
 	void mat4_look_at(vec3 eye, vec3 center, vec3 up, mat4 m);
 	void mat4_perspective(float y_fov, float aspect, float n, float f, mat4 m);
 
