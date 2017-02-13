@@ -80,7 +80,7 @@ int init_resources() {
 		GL_STATIC_DRAW
 	);
 
-	program = sdr_create_program("shader/vertex.glsl", "shader/fragment.glsl");
+	program = dash_create_program("shader/vertex.glsl", "shader/fragment.glsl");
 
 	const char *attribute_name = "coord2d";
 	attribute_coord2d = glGetAttribLocation(program, attribute_name);
