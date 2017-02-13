@@ -143,10 +143,10 @@ int init_resources() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_cube_indices);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_elements), cube_elements, GL_STATIC_DRAW);
 
-	printf("Original: %d\n", texture_id);
-	dash_texture_load("texture.png", &texture_id);
-	printf("Filled: %d\n", texture_id);
-
+	int width, height, depth;
+	unsigned char *data;
+	texture_id = dash_texture_load("texture.png");
+	
 	program = dash_create_program("shader/vertex.glsl", "shader/fragment.glsl");
 	if(!program) {
 		return 0;

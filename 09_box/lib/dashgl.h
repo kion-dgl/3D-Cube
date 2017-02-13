@@ -54,7 +54,7 @@
 	GLuint dash_create_shader(const char *filename, GLenum type);
 	void dash_print_log(GLuint object);
 	GLuint dash_create_program(const char *vertex, const char *fragment);
-	void dash_texture_load(const char *filename, GLuint *tex_id);
+	GLuint dash_texture_load(const char *filename);
 	
 	/**********************************************************************/
 	/** Vector3 Utilities                                                **/	

@@ -176,12 +176,16 @@ GLuint dash_create_program(const char *vertex, const char *fragment) {
 
 }
 
-void dash_texture_load(const char *filename, GLuint *tex_id) {
+
+
+
+GLuint dash_texture_load(const char *filename) {
 
 	FILE *fp;
 	
+	GLuint texture_id;
 	png_structp png_ptr;
-	png_infop info_ptr;
+    png_infop info_ptr;
 	int width, height, bit_depth;
 	unsigned char *data;
 	int color_type, num_passes, y, x, i;
@@ -202,29 +206,30 @@ void dash_texture_load(const char *filename, GLuint *tex_id) {
 	if (png_sig_cmp(header, 0, 8)) {
 		fprintf(stderr, "%s is not a valid png file\n", filename);
 		exit(1);
+
 	}
 
 	png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
-	if (png_ptr == NULL) {
-		fclose(fp);
-		return;
-	}
+    if (png_ptr == NULL) {
+        fclose(fp);
+        return;
+    }
 
-	info_ptr = png_create_info_struct(png_ptr);
-	if (info_ptr == NULL) {
-		fclose(fp);
-		png_destroy_read_struct(&png_ptr, NULL, NULL);
-		return;
-	}
+    info_ptr = png_create_info_struct(png_ptr);
+    if (info_ptr == NULL) {
+        fclose(fp);
+        png_destroy_read_struct(&png_ptr, NULL, NULL);
+        return;
+    }
 
-	if (setjmp(png_jmpbuf(png_ptr))) {
-		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-		fclose(fp);
-		return;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        fclose(fp);
+        return;
+    }
 
-	png_init_io(png_ptr, fp);
+    png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, 8);
 	png_read_info(png_ptr, info_ptr);
 
@@ -243,7 +248,7 @@ void dash_texture_load(const char *filename, GLuint *tex_id) {
 			exit(1);
 		break;
 		case PNG_COLOR_TYPE_RGB:
-			color_type = GL_RGB;
+			bit_depth = GL_RGB;
 			color_type = 3;
 			data = (unsigned char*)malloc(3 * width * height);
 		break;
@@ -256,17 +261,17 @@ void dash_texture_load(const char *filename, GLuint *tex_id) {
 			exit(1);
 		break;
 		case PNG_COLOR_TYPE_RGBA:
-			color_type = GL_RGBA;
+			bit_depth = GL_RGBA;
 			color_type = 4;
 			data = (unsigned char*)malloc(4 * width * height);
 		break;
 	}
 
-	if (setjmp(png_jmpbuf(png_ptr))) {
-		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-		fclose(fp);
-		return;
-	}
+    if (setjmp(png_jmpbuf(png_ptr))) {
+        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+        fclose(fp);
+        return;
+    }
 	
 	rows = (png_bytep*) malloc(sizeof(png_bytep) * height);
 	for (y = 0; y < height; y++) {
@@ -285,19 +290,21 @@ void dash_texture_load(const char *filename, GLuint *tex_id) {
 	png_free(png_ptr, rows);
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 
-	glGenTextures(1, &(*tex_id));
-	glBindTexture(GL_TEXTURE_2D, *tex_id);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D,
-		0,
-		color_type,
-		width,
-		height,
-		0,
-		color_type,
-		GL_UNSIGNED_BYTE,
-		data
-	);
+    glGenTextures(1, &texture_id);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D,
+        0,
+        bit_depth,
+        width,
+        height,
+        0,
+        bit_depth,
+        GL_UNSIGNED_BYTE,
+        data
+    );
+	
+	return texture_id;
 
 }
 
